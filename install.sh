@@ -171,7 +171,7 @@ sed -i 's/# %wheel ALL=(ALL:ALL) ALL/%wheel ALL=(ALL:ALL) ALL/' $MOUNT/etc/sudoe
 sed -i 's/#Color/Color/' $MOUNT/etc/pacman.conf
 sed -z 's/#\[multilib\]\n#Include/\[multilib\]\nInclude/g' -i $MOUNT/etc/pacman.conf
 mkdir -p $MOUNT/etc/NetworkManager/conf.d/
-cat $MOUNT/etc/NetworkManager/conf.d/wifi_backend.conf <<EOF
+cat > $MOUNT/etc/NetworkManager/conf.d/wifi_backend.conf <<EOF
 [device]
 wifi.backend=iwd
 EOF
@@ -180,6 +180,9 @@ arch-chroot $MOUNT /bin/bash - <<EOF
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 hwclock --systohc
 locale-gen
+
+pacman-key --init
+pacman-key --populate archlinux
 pacman -Syu --noconfirm
 pacman -S --needed - < /root/pkglist
 
